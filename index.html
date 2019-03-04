@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ch">
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css?2584">
+    <link rel="stylesheet" type="text/css" href="style.css?1179">
+    <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
+
+
+    <script src="./js/jquery-3.3.1.min.js?8531"></script>
+    <script src="./js/bootstrap.bundle.min.js?5511"></script>
+    <script src="./js/blocs.min.js?3734"></script>
+    <script src="./js/jqBootstrapValidation.js"></script>
+    <script src="./js/formHandler.js?5028"></script>
+    <script src="./js/lazysizes.min.js" defer></script>
+    <title>Ticket</title>
+</head>
+<body>
+<!-- Main container -->
+<div class="page-container">
+    <div class="bloc l-bloc " id="bloc-0">
+        <div class="container bloc-lg">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="mg-md h3-1-style">
+                                总数
+                            </h3>
+                        </div>
+                        <div class="col">
+                            <h3 class="mg-md" id="total_sum">
+                                25
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bloc l-bloc" id="adult">
+        <div class="container bloc-lg">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5 class="mg-md">
+                        成人
+                    </h5>
+                </div>
+                <div class="col-md-3">
+                    <input type="button" class="btn btn-primary  btn-lg" name="addBtn" value="+">
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mg-md" name="value">
+
+                    </h5>
+                </div>
+                <div class="col-md-3">
+                    <input type="button" class="btn btn-primary  btn-lg" name="reduceBtn" value="-">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bloc l-bloc" id="child">
+        <div class="container bloc-lg">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5 class="mg-md" name="name">
+                        儿童
+                    </h5>
+                </div>
+                <div class="col-md-3">
+                    <input type="button" class="btn btn-primary btn-lg" name="addBtn" value="+">
+                </div>
+                <div class="col-md-3">
+                    <form id="form_5894" novalidate>
+                        <div class="form-group">
+                            <h5 class="mg-md" name="value">
+
+                            </h5>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-3">
+                    <input type="button" class="btn btn-primary btn-lg" name="reduceBtn" value="-">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="application/javascript">
+
+    const ticketMax = 15;
+    // 利用浅拷贝可以传递对象
+    let adultValue = {value: 1};
+    let childValue = {value: 0};
+    const adultMin = 1;
+    const childMin = 0;
+
+    // 初始化视图
+    const adultView = $("#adult");
+    const childView = $("#child");
+    adultView.find("[name=value]").html(adultValue.value);
+    childView.find("[name=value]").html(childValue.value);
+    $("#total_price").html(adultValue.value * adultPrice + childValue.value * childPrice);
+    //添加绑定事件
+    adultView.find("[name=addBtn]").on("click", function () {
+        btnClick(adultView, adultValue, 1, adultMin)
+    });
+    adultView.find("[name=reduceBtn]").on("click", function () {
+        btnClick(adultView, adultValue, -1, adultMin)
+    }).attr("disabled", true);
+    childView.find("[name=addBtn]").on("click", function () {
+        btnClick(childView, childValue, 1, childMin)
+    });
+    childView.find("[name=reduceBtn]").on("click", function () {
+        btnClick(childView, childValue, -1, childMin)
+    }).attr("disabled", true);
+
+    //统一的绑定方法
+    function btnClick(view, valueObject, change, min) {
+        // 变更值
+        valueObject.value += change;
+        // 绘制到视图
+        view.find("[name=value]").html(valueObject.value);
+
+        // 判断加减号状态
+        view.find("[name=reduceBtn]").attr("disabled", valueObject.value == min);
+        $("[name= addBtn]").attr("disabled", childValue.value + adultValue.value == ticketMax);
+        // 计算价格
+        $("#total_sum").html(adultValue.value + childValue.value);
+    }
+
+</script>
+</body>
+</html>
